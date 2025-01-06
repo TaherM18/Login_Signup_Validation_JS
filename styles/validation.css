@@ -1,0 +1,69 @@
+:root {
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #dc3545;
+}
+
+.valid {
+    border: 1px solid var(--success) !important;
+    box-shadow: 0 0 4px var(--success) !important;
+}
+
+.invalid {
+    border: 1px solid var(--danger) !important;
+    box-shadow: 0 0 4px var(--danger) !important;
+}
+
+.success {
+    color: var(--success);
+}
+
+.danger {
+    color: var(--danger);
+}
+
+.form-message {
+    font-size: small;
+}
+
+.required::after {
+    content: "*";
+    margin-left: 2px;
+    color: red;
+}
+
+/*  */
+
+.condition-group {
+    margin: 0 auto;
+    display: none;
+}
+
+.condition-group-heading {
+    margin: 0 0 8px 0;
+    font-weight: 500;
+}
+
+.condition-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.condition-list-item {
+    padding: 2px;
+    list-style-position: inside;
+    list-style-image:  url("../images/exclamation-circle.svg");
+}
+
+.condition-list-item::marker {
+    color: var(--success);
+}
+
+.satisfied {
+    list-style-image:  url("../images/check-circle.svg");
+}
+
+.not-satisfied {
+    list-style-image:  url("../images/exclamation-circle.svg");
+}
