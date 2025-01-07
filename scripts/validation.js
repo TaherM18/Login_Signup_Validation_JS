@@ -17,11 +17,11 @@ const special = document.getElementById("special");
 
 export function sanitize(value) {
     const regex = /\s{2,}/g;
-    return value.replace(regex, " ");
+    return value.trim().replace(regex, " ");
 }
 
 export function isValidName(value) {
-    const regex = /^[a-zA-Z]+$/;
+    const regex = /^[a-zA-Z\s'-]+$/;
     return value.match(regex) != null;
 }
 
@@ -30,9 +30,13 @@ export function isValidPhone(value) {
     return value.match(regex) != null;
 }
 
+export function isValidDate(value) {
+    const date = new Date(value);
+    return !isNaN(date.getTime());
+}
+
 export function isValidEmail(value) {
-    // const regex = /^[^.][a-zA-Z0-9._!#$%&'*+/=?^_`{|}~-]+@{1}[a-zA-Z.]+.{1}[a-z]{2,5}$/;
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,5}$/;
     return value.match(regex) != null;
 }
 
@@ -48,8 +52,7 @@ export function isValidConfirm(value1, value2) {
 // Checks =================================================================================
 
 export function checkName(input, msg) {
-    input.value = sanitize(input.value);
-    if (input.value == 0) {
+    if (input.value.trim().length === 0) {
         setInvalidInput(input);
         setInvalidMessage(msg, "Name is required");
         return false;
@@ -67,15 +70,15 @@ export function checkName(input, msg) {
 }
 
 export function checkEmail(input, msg) {
-    input.value = sanitize(input.value);
-    if (input.value.length == 0) {
+    input.value = input.value.replace(/\s+/, "");
+    if (input.value.length === 0) {
         setInvalidInput(input);
         setInvalidMessage(msg, "This field is required");
         return false;
     }
     else if (!isValidEmail(input.value)) {
         setInvalidInput(input);
-        setInvalidMessage(msg);
+        setInvalidMessage(msg, "Invalid email");
         return false;
     }
     else {
@@ -88,7 +91,7 @@ export function checkEmail(input, msg) {
 export function checkPassword(input, msg) {
     input.value = input.value.replace(/\s/g, "");
     
-    if (input.value.length == 0) {
+    if (input.value.length === 0) {
         setInvalidInput(input);
         setInvalidMessage(msg, "Password is required");
         return false;
@@ -125,7 +128,7 @@ export function checkPasswordConditions(value) {
 }
 
 export function checkConfirmPassword(pass, confirm, msg) {
-    if (confirm.value.length == 0) {
+    if (confirm.value.length === 0) {
         setInvalidInput(confirm);
         setInvalidMessage(msg, "Confirmation is required");
         return false;
@@ -143,42 +146,37 @@ export function checkConfirmPassword(pass, confirm, msg) {
 }
 
 export function checkDOB(target, msg, allowFuture = false, minAge = NaN) {
-    // console.log("birthdate:", target.value);
     if (target.value.length != 10) {
         setInvalidInput(target);
         setInvalidMessage(msg, "Please select your birthdate");
         return false; // empty
     }
-
     // Check if the value is a valid date
-    const dob = new Date(target.value);
-    if (isNaN(dob.getTime())) {
+    if (!isValidDate(target.value)) {
         setInvalidInput(target);
         setInvalidMessage(msg, "Invalid date");
         return false; // Invalid date
     }
-
     // Check if the date is in the future
     const today = new Date();
+    const dob = new Date(target.value);
     if (!allowFuture && dob > today) {
         setInvalidInput(target);
         setInvalidMessage(msg, "Date cannot be in future");
         return false;
     }
-
     // Check the age
     if (!isNaN(minAge)) {
         const age = today.getFullYear() - dob.getFullYear();
         const monthDiff = today.getMonth() - dob.getMonth();
         const dayDiff = today.getDate() - dob.getDate();
         
-        if (age > minAge || (age === minAge && (monthDiff > 0 || (monthDiff === 0 && dayDiff >= 0)))) {
+        if (age <= minAge || (age === minAge && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
             setInvalidInput(target);
             setInvalidMessage(msg, `Age cannot be less than ${minAge}`);
             return false; // Age less than minAge
         }
     }
-
     // All Good
     setValidInput(target);
     setValidMessage(msg);
@@ -212,9 +210,19 @@ export function setValidMessage(target, message = "Looks good!") {
 export function setInvalidMessage(target, message = "Invalid") {
     if (!target.classList.contains(dangerClass)) {
         target.classList.add(dangerClass);
-        target.innerHTML = message;
     }
+    target.innerHTML = message;
     target.classList.remove(successClass);
+}
+
+export function setMessage(target, message, isValid) {
+    const addClass = isValid ? successClass : dangerClass;
+    const removeClass = isValid ? dangerClass : successClass;
+    if (!target.classList.contains(addClass)) {
+        target.classList.add(addClass);
+    }
+    target.innerHTML = message;
+    target.classList.remove(removeClass);
 }
 
 export function setSatisfied(target) {
@@ -231,15 +239,16 @@ export function setNotSatisfied(target) {
     target.classList.remove(satisfiedClass);
 }
 
-export function resetInput(target) {
-    target.classList.remove(validInputClass);
-    target.classList.remove(invalidInputClass);
-}
-
-export function resetMessage(target) {
-    target.innerHTML = "";
-    target.classList.remove(successClass);
-    target.classList.remove(dangerClass);
+export function resetForm(form) {
+    form.querySelectorAll("input").forEach(function(element) {
+        element.classList.remove(validInputClass);
+        element.classList.remove(invalidInputClass);
+    });
+    form.querySelectorAll(".form-message").forEach(function(element) {
+        element.innerHTML = "";
+        element.classList.remove(successClass);
+        element.classList.remove(dangerClass);
+    });
 }
 
 export function invalidSubmit(target) {

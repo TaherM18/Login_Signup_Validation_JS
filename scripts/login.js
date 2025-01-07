@@ -1,19 +1,15 @@
 // Imports
 
 import {
-    setValidInput,
+    checkEmail,
     setInvalidInput,
-    isValidEmail,
-    isValidPassword,
-    setValidMessage,
     setInvalidMessage,
-    resetInput,
-    resetMessage,
-    invalidSubmit,
-    validSubmit,
+    setValidInput,
+    setValidMessage,
+    resetForm
 } from "./validation.js";
 
-// Elements
+// Elements ================================================================
 
 const txtEmail = document.getElementById("txt-email");
 const txtPass = document.getElementById("txt-pass");
@@ -22,59 +18,74 @@ const btnSubmit = document.getElementById("btn-submit");
 const msgEmail = document.getElementById("msg-email");
 const msgPass = document.getElementById("msg-pass");
 
-// Event Listeners
+const alertSuccess = document.getElementById("alert-success");
+const alertDanger = document.getElementById("alert-danger");
+
+// Event Listeners ===========================================================
 
 txtEmail.addEventListener("input", (e) => {
-    if (isValidEmail(e.target.value) === true) {
-        setValidInput(e.target);
-        setValidMessage(msgEmail)
-        validSubmit(btnSubmit);
-    } else {
-        setInvalidInput(e.target);
-        setInvalidMessage(msgEmail);
-        invalidSubmit(btnSubmit);
-    }
+    checkEmail(e.target, msgEmail);
 });
 
 txtPass.addEventListener("input", (e) => {
-    if (e.target.value.length > 0) {
-        setValidInput(e.target);
-        setValidMessage(msgPass);
-        validSubmit(btnSubmit);
-    } else {
-        setInvalidInput(e.target);
-        setInvalidMessage(msgPass);
-        invalidSubmit(btnSubmit);
-    }
+    validatePassword(e.target, msgPass);
 });
 
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    // console.log("form submit");
     const emailData = "taher@gmail.com";
     const passData = "pass@123";
 
-    if (isValidEmail(txtEmail.value) && isValidPassword(txtPass.value)) {
+    if (checkEmail(txtEmail, msgEmail) && validatePassword(txtPass, msgPass)) {
         if (txtEmail.value == emailData && txtPass.value == passData) {
-            alert("Login Successfull");
-            loginForm.reset();
-            resetInput(txtEmail);
-            resetInput(txtPass);
-            resetMessage(msgEmail);
-            resetMessage(msgPass);
+            show(alertSuccess);
+            setTimeout(() => {
+                hide(alertSuccess);
+            }, 3000);
+
+            resetForm(loginForm);
         }
         else {
-            setInvalidInput(txtEmail);
-            setInvalidInput(txtPass);
-            alert("Incorect Credentials");
+            alertDanger.querySelector("div").innerHTML = "Incorect Credentials";
+            show(alertDanger);
+            setTimeout(() => {
+                hide(alertDanger);
+            }, 3000);
         }
     }
     else {
-        alert("Please enter valid data");
-        loginForm.reset();
-        resetInput(txtEmail);
-        resetInput(txtPass);
-        resetMessage(msgEmail);
-        resetMessage(msgPass);
+        alertDanger.querySelector("div").innerHTML = "Resolve form errors to contnue";
+        show(alertDanger);
+        setTimeout(() => {
+            hide(alertDanger);
+        }, 3000);
     }
 });
+
+// Functions =========================================================================
+
+function show(target) {
+    target.style.display = "block";
+}
+
+function hide(target) {
+    target.style.display = "none";
+}
+
+function validatePassword(target, msg) {
+    if (target.value.length === 0) { // Check for empty input first
+        setInvalidInput(target);
+        setInvalidMessage(msg, "Password is required");
+        return false;
+    }
+    else if (target.value.length < 6) { // Ensure this condition only applies to non-empty input
+        setInvalidInput(target);
+        setInvalidMessage(msg, "Password must be at least 6 characters long");
+        return false;
+    }
+    else {
+        setValidInput(target);
+        setValidMessage(msg);
+        return true;
+    }
+}

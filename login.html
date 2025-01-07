@@ -1,43 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="./styles/style.css">
-        <title>Login</title>
-    </head>
-    <body>
-        <div class="container">
 
-            <form id="login-form" class="login-form" method="post">
-                <h2>Sign In</h2>
-                <label for="txt-email">Email</label>
-                <input
-                    id="txt-email"
-                    class="form-input"
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    required
-                />
-                <span id="msg-email" class="message"></span>
-                
-                <label for="txt-email">Password</label>
-                <input
-                    id="txt-pass"
-                    class="form-input"
-                    type="password"
-                    name="pass"
-                    placeholder="Your Password"
-                    required
-                />
-                <span id="msg-pass" class="message"></span>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+        integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./styles/validation.css" />
+    <title>Login</title>
+    <style>
+        body {
+            height: 100vh;
+            /* background: linear-gradient(to top right, darkblue, lightblue); */
+        }
+    </style>
+</head>
 
-                <button id="btn-submit" type="submit" class="btn" disabled>Submit</button>
-            </form>
+<body>
+    <div class="container mt-3">
 
+        <div id="alert-danger" style="display: none;">
+            <div id="alert-danger" class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2"></i>
+                <div>Resolve form errors to continue</div>
+            </div>
         </div>
-        
-        <script type="module" src="./scripts/login.js"></script>
-    </body>
+        <div id="alert-success" style="display: none;">
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+                <i class="bi bi-check-circle-fill flex-shrink-0 me-2"></i>
+                <div>Login Successfull</div>
+            </div>
+        </div>
+
+        <div class="card mx-auto" style="max-width: 500px;">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">
+                    Login
+                    <i class="bi bi-box-arrow-in-right"></i>
+                </h3>
+                <form id="login-form" class="login-form" method="post">
+                    <!-- email -->
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <label for="txt-email" class="input-group-text required">
+                                <i class="bi bi-envelope-at-fill"></i>
+                            </label>
+                            <input type="text" class="form-control" id="txt-email" placeholder="Enter your email"
+                                aria-label="Email" />
+                        </div>
+                        <span id="msg-email" class="form-message"></span>
+                    </div>
+                    <!-- password -->
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <label for="txt-pass" class="input-group-text required">
+                                <i class="bi bi-key-fill"></i>
+                            </label>
+                            <input type="password" class="form-control" id="txt-pass" placeholder="Enter your password"
+                                aria-label="Password" />
+                        </div>
+                        <span id="msg-pass" class="form-message"></span>
+                    </div>
+                    <!-- remember me checkbox -->
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="chk-remember" name="chk-remember" />
+                        <label for="chk-remember" class="form-check-label">Remember Me</label>
+                    </div>
+                    <!-- Link -->
+                    <div class="mb-3">
+                        New Member?
+                        <a href="./signup.html">Register Here</a>
+                    </div>
+                    <!-- Submit Button -->
+                    <button id="btn-submit" type="submit" class="btn btn-primary w-100">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./scripts/login.js"></script>
+</body>
+
 </html>
