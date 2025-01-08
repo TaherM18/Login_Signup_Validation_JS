@@ -240,9 +240,9 @@ export function setNotSatisfied(target) {
 }
 
 export function resetForm(form) {
-    form.querySelectorAll("input").forEach(function(element) {
-        element.classList.remove(validInputClass);
-        element.classList.remove(invalidInputClass);
+    form.reset();
+    form.querySelectorAll("input, textarea, select").forEach(function(element) {
+        element.classList.remove(validInputClass, invalidInputClass);
     });
     form.querySelectorAll(".form-message").forEach(function(element) {
         element.innerHTML = "";

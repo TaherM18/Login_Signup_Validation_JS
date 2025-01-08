@@ -19,6 +19,9 @@
             height: 100vh;
             /* background: linear-gradient(to top right, darkblue, lightblue); */
         }
+        #toggle-pass:hover {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -34,11 +37,11 @@
         <div id="alert-success" style="display: none;">
             <div class="alert alert-success d-flex align-items-center" role="alert">
                 <i class="bi bi-check-circle-fill flex-shrink-0 me-2"></i>
-                <div>Login Successfull</div>
+                <div>Registration Successfull</div>
             </div>
         </div>
 
-        <div class="card mx-auto" style="max-width: 500px;">
+        <div class="card mx-auto shadow" style="max-width: 500px;">
             <div class="card-body">
                 <h3 class="card-title text-center mb-4">
                     Login
@@ -62,8 +65,11 @@
                             <label for="txt-pass" class="input-group-text required">
                                 <i class="bi bi-key-fill"></i>
                             </label>
-                            <input type="password" class="form-control" id="txt-pass" placeholder="Enter your password"
-                                aria-label="Password" />
+                            <input type="password" class="form-control" id="txt-pass" placeholder="Enter your password" aria-label="Password" />
+                            <!-- toggle -->
+                            <span class="input-group-text" id="toggle-pass">
+                                <i class="bi bi-eye" id="toggle-icon"></i>
+                            </span>
                         </div>
                         <span id="msg-pass" class="form-message"></span>
                     </div>

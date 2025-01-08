@@ -9,6 +9,8 @@ import {
     resetForm
 } from "./validation.js";
 
+import { togglePassword } from "./bootstrapUtil.js";
+
 // Elements ================================================================
 
 const txtEmail = document.getElementById("txt-email");
@@ -17,11 +19,17 @@ const loginForm = document.getElementById("login-form");
 const btnSubmit = document.getElementById("btn-submit");
 const msgEmail = document.getElementById("msg-email");
 const msgPass = document.getElementById("msg-pass");
+const togglePass = document.getElementById("toggle-pass");
+const toggleIcon = document.getElementById("toggle-icon");
 
 const alertSuccess = document.getElementById("alert-success");
 const alertDanger = document.getElementById("alert-danger");
 
 // Event Listeners ===========================================================
+
+togglePass.addEventListener("click", (e) => {
+    togglePassword(toggleIcon, txtPass);
+})
 
 txtEmail.addEventListener("input", (e) => {
     checkEmail(e.target, msgEmail);

@@ -11,9 +11,9 @@ import {
     checkDOB,
     checkPasswordConditions,
     checkEmail,
-    isValidEmail,
     resetForm
 } from "./validation.js";
+import { togglePassword } from "./bootstrapUtil.js";
 
 // Elements =============================================================
 
@@ -24,6 +24,8 @@ const dob = document.getElementById("dob");
 const country = document.getElementById("country");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
+const togglePass = document.getElementById("toggle-pass");
+const toggleIcon = document.getElementById("toggle-icon");
 const confirmPassword = document.getElementById("confirm-password");
 const terms = document.getElementById("terms");
 const btnSubmit = document.getElementById("btn-submit");
@@ -60,6 +62,10 @@ password.addEventListener("input", (e) => {
     checkPassword(e.target, msgPass);
     checkPasswordConditions(e.target.value);
 });
+
+togglePass.addEventListener("click", (e) => {
+    togglePassword(toggleIcon, password);
+})
 
 password.addEventListener("focus", () => {
     conditionGroup.style.display = "block"
